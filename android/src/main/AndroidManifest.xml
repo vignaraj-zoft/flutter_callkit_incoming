@@ -33,6 +33,6 @@
                 <action android:name="com.hiennv.flutter_callkit_incoming.ACTION_CALL_TIMEOUT" />
             </intent-filter>
         </receiver>
-
+    <service android:name=".RingtonePlayerService" />
     </application>
 </manifest>
