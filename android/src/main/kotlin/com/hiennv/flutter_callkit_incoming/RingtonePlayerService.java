@@ -21,7 +21,6 @@ public class RingtonePlayerService extends Service {
         //getting systems default ringtone
         myPlayer = MediaPlayer.create(this,
                 Settings.System.DEFAULT_RINGTONE_URI);
-        Toast.makeText(this, "Ringtone playing", Toast.LENGTH_LONG).show();
         //setting loop play to true
         //this will make the ringtone continuously playing
         myPlayer.setLooping(false);
@@ -34,7 +33,6 @@ public class RingtonePlayerService extends Service {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Ringtone playing Stopped", Toast.LENGTH_LONG).show();
         myPlayer.stop();
     }
 }
