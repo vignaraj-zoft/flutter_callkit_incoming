@@ -77,17 +77,17 @@ class CallkitSoundPlayer(private val context: Context) {
 
     private fun playSound() {
         val sound = this.data?.getString(
-                CallkitIncomingBroadcastReceiver.EXTRA_CALLKIT_RINGTONE_PATH,
-                "ringtone_default"
+            CallkitIncomingBroadcastReceiver.EXTRA_CALLKIT_RINGTONE_PATH,
+            "ringtone_default"
         )
         val uri = sound?.let { getRingtoneUri(it) }
         mediaPlayer = MediaPlayer.create(context, uri).apply {
             isLooping = true
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val attribution = AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-                        .build()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                    .build()
                 setAudioAttributes(attribution)
             } else {
                 setAudioStreamType(AudioManager.STREAM_NOTIFICATION)

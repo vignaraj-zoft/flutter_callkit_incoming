@@ -45,7 +45,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_callkit_incoming")
         channel.setMethodCallHandler(this)
         events =
-                EventChannel(flutterPluginBinding.binaryMessenger, "flutter_callkit_incoming_events")
+            EventChannel(flutterPluginBinding.binaryMessenger, "flutter_callkit_incoming_events")
         events.setStreamHandler(eventHandler)
     }
 
@@ -59,40 +59,40 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                     callkitNotificationManager.showIncomingNotification(data.toBundle())
                     //send BroadcastReceiver
                     context.sendBroadcast(
-                            CallkitIncomingBroadcastReceiver.getIntentIncoming(
-                                    context,
-                                    data.toBundle()
-                            )
+                        CallkitIncomingBroadcastReceiver.getIntentIncoming(
+                            context,
+                            data.toBundle()
+                        )
                     )
                     result.success("OK")
                 }
                 "startCall" -> {
                     val data = Data(call.arguments())
                     context.sendBroadcast(
-                            CallkitIncomingBroadcastReceiver.getIntentStart(
-                                    context,
-                                    data.toBundle()
-                            )
+                        CallkitIncomingBroadcastReceiver.getIntentStart(
+                            context,
+                            data.toBundle()
+                        )
                     )
                     result.success("OK")
                 }
                 "endCall" -> {
                     val data = Data(call.arguments())
                     context.sendBroadcast(
-                            CallkitIncomingBroadcastReceiver.getIntentEnded(
-                                    context,
-                                    data.toBundle()
-                            )
+                        CallkitIncomingBroadcastReceiver.getIntentEnded(
+                            context,
+                            data.toBundle()
+                        )
                     )
                     result.success("OK")
                 }
                 "endAllCalls" -> {
                     val data = Data(call.arguments())
                     context.sendBroadcast(
-                            CallkitIncomingBroadcastReceiver.getIntentEnded(
-                                    context,
-                                    data.toBundle()
-                            )
+                        CallkitIncomingBroadcastReceiver.getIntentEnded(
+                            context,
+                            data.toBundle()
+                        )
                     )
                     result.success("OK")
                 }
@@ -131,8 +131,8 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
 
         fun send(event: String, body: Map<String, Any>) {
             val data = mapOf(
-                    "event" to event,
-                    "body" to body
+                "event" to event,
+                "body" to body
             )
             Handler(Looper.getMainLooper()).post {
                 eventSink?.success(data)
