@@ -1,38 +1,63 @@
-package com.hiennv.flutter_callkit_incoming;
+package com.hiennv.flutter_callkit_incoming
 
-import android.app.Service;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.os.IBinder;
-import android.provider.Settings;
+import android.app.Activity
+import android.app.ActivityManager
+import android.content.Context
+import android.content.Intent
+import android.content.res.Resources
 
-import android.widget.Toast;
+class Utils {
 
-public class RingtonePlayerService extends Service {
-    MediaPlayer myPlayer;
+    companion object {
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
+        @JvmStatic
+        fun dpToPx(dp: Float): Float {
+            return dp * Resources.getSystem().displayMetrics.density
+        }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        //getting systems default ringtone
-        myPlayer = MediaPlayer.create(this,
-                Settings.System.DEFAULT_RINGTONE_URI);
-        //setting loop play to true
-        //this will make the ringtone continuously playing
-        myPlayer.setLooping(false);
-        //staring the player
-        myPlayer.start();
-        //we have some options for service
-        //start sticky means service will be explicity started and stopped
-        return START_STICKY;
-    }
+        @JvmStatic
+        fun pxToDp(px: Float): Float {
+            return px / Resources.getSystem().displayMetrics.density
+        }
 
-    @Override
-    public void onDestroy() {
-        myPlayer.stop();
+        @JvmStatic
+        fun getScreenWidth(): Int {
+            return Resources.getSystem().displayMetrics.widthPixels
+        }
+
+        @JvmStatic
+        fun getScreenHeight(): Int {
+            return Resources.getSystem().displayMetrics.heightPixels
+        }
+
+        fun getNavigationBarHeight(context: Context): Int {
+            val resources = context.resources
+            val id = resources.getIdentifier(
+                    "navigation_bar_height", "dimen", "android"
+            )
+            return if (id > 0) {
+                resources.getDimensionPixelSize(id)
+            } else 0
+        }
+
+        fun getStatusBarHeight(context: Context): Int {
+            val resources = context.resources
+            val id: Int =
+                    resources.getIdentifier("status_bar_height", "dimen", "android")
+            return if (id > 0) {
+                resources.getDimensionPixelSize(id)
+            } else 0
+        }
+
+        fun backToForeground(context: Context) {
+            val packageName = context.packageName
+            val intent = context.packageManager.getLaunchIntentForPackage(packageName)?.cloneFilter()
+
+            intent?.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+
+            intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        }
+
     }
 }
