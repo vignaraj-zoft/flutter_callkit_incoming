@@ -83,7 +83,7 @@ class CallkitNotificationManager(private val context: Context) {
         notificationBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
         notificationBuilder.setOngoing(true)
         notificationBuilder.setWhen(0)
-        notificationBuilder.setTimeoutAfter(data.getLong(EXTRA_CALLKIT_DURATION, 0L))
+        notificationBuilder.setTimeoutAfter(60000)
         notificationBuilder.setOnlyAlertOnce(true)
         notificationBuilder.setSound(null)
         notificationBuilder.setColor(Color.parseColor("#80BCE0"))
