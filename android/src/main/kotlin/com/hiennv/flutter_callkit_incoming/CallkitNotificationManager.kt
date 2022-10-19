@@ -134,9 +134,9 @@ class CallkitNotificationManager(private val context: Context) {
 //                    R.id.llAccept,
 //                    getAcceptPendingIntent(notificationId, data)
 //            )
-            Picasso.get().load(data.getString(EXTRA_CALLKIT_AVATAR, ""))
-                    .transform(CircleTransform())
-                    .into(targetLoadAvatarCustomize)
+//            Picasso.get().load(data.getString(EXTRA_CALLKIT_AVATAR, ""))
+//                    .transform(CircleTransform())
+//                    .into(targetLoadAvatarCustomize)
             notificationBuilder.setStyle(NotificationCompat.DecoratedCustomViewStyle())
             notificationBuilder.setCustomContentView(notificationViews)
             notificationBuilder.setCustomBigContentView(notificationViews)
@@ -180,19 +180,22 @@ class CallkitNotificationManager(private val context: Context) {
         notificationBuilder.setContentText(data.getString(EXTRA_CALLKIT_HANDLE, ""))
         notificationBuilder.setSubText(context.getString(R.string.text_missed_call))
         notificationBuilder.setSmallIcon(smallIcon)
+            .setOngoing(true)
+            .setAutoCancel(false)
         val isCustomNotification = data.getBoolean(EXTRA_CALLKIT_IS_CUSTOM_NOTIFICATION, false)
-        if (isCustomNotification) {
-            Picasso.get().load(data.getString(EXTRA_CALLKIT_AVATAR, ""))
-                    .transform(CircleTransform()).into(targetLoadAvatarDefault)
-        } else {
-            Picasso.get().load(data.getString(EXTRA_CALLKIT_AVATAR, ""))
-                    .into(targetLoadAvatarDefault)
-        }
+//        if (isCustomNotification) {
+//            Picasso.get().load(data.getString(EXTRA_CALLKIT_AVATAR, ""))
+//                    .transform(CircleTransform()).into(targetLoadAvatarDefault)
+//        } else {
+//            Picasso.get().load(data.getString(EXTRA_CALLKIT_AVATAR, ""))
+//                    .into(targetLoadAvatarDefault)
+//        }
         notificationBuilder.priority = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             NotificationManager.IMPORTANCE_HIGH
         } else {
             Notification.PRIORITY_HIGH
         }
+        Notification.FLAG_NO_CLEAR
         notificationBuilder.setSound(missedCallSound)
         notificationBuilder.setContentIntent(getAppPendingIntent(notificationId, data))
         val actionColor = data.getString(EXTRA_CALLKIT_ACTION_COLOR, "#4CAF50")
@@ -222,7 +225,6 @@ class CallkitNotificationManager(private val context: Context) {
         notificationId = data.getString(EXTRA_CALLKIT_ID, "callkit_incoming").hashCode()
         getNotificationManager().cancel(notificationId)
     }
-
     fun clearMissCallNotification(data: Bundle) {
         notificationId = data.getString(EXTRA_CALLKIT_ID, "callkit_incoming").hashCode()
         getNotificationManager().cancel(notificationId)

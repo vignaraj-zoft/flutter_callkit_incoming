@@ -1,11 +1,13 @@
 package com.hiennv.flutter_callkit_incoming
 
 import android.app.Activity
+import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.NonNull
-
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -22,7 +24,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
 
     companion object {
 
-
+        var myPlayer= MediaPlayer()
         private val eventHandler = EventCallbackHandler()
 
         fun sendEvent(event: String, body: Map<String, Any>) {
@@ -57,6 +59,9 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
             callkitNotificationManager = CallkitNotificationManager(this.context)
             when (call.method) {
                 "showCallkitIncoming" -> {
+                    myPlayer.stop()
+                    context.stopService(Intent(context, RingtonePlayerService::class.java))
+
                     data = Data(call.arguments())
                     data!!.from = "notification"
                     callkitNotificationManager.showIncomingNotification(data!!.toBundle())
@@ -70,6 +75,8 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                     result.success("OK")
                 }
                 "startCall" -> {
+                    myPlayer.stop()
+                    context.stopService(Intent(context, RingtonePlayerService::class.java))
                     data = Data(call.arguments())
                     context.sendBroadcast(
                         CallkitIncomingBroadcastReceiver.getIntentStart(
@@ -80,6 +87,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                     result.success("OK")
                 }
                 "endCall" -> {
+                    myPlayer.stop()
                     val data = Data(call.arguments())
                     context.sendBroadcast(
                         CallkitIncomingBroadcastReceiver.getIntentEnded(
@@ -90,13 +98,8 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
                     result.success("OK")
                 }
                 "endAllCalls" -> {
-                    val data = Data(call.arguments())
-                    context.sendBroadcast(
-                        CallkitIncomingBroadcastReceiver.getIntentEnded(
-                            context,
-                            data.toBundle()
-                        )
-                    )
+                    myPlayer.stop()
+                    context.stopService(Intent(context, RingtonePlayerService::class.java))
                     result.success("OK")
                 }
                 "activeCalls" -> {

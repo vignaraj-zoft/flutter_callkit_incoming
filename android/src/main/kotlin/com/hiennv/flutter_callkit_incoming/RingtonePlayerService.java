@@ -6,11 +6,12 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
+import com.hiennv.flutter_callkit_incoming.FlutterCallkitIncomingPlugin;
 
 import android.widget.Toast;
 
 public class RingtonePlayerService extends Service {
-    MediaPlayer myPlayer;
+    ;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -20,20 +21,20 @@ public class RingtonePlayerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //getting systems default ringtone
-        myPlayer = MediaPlayer.create(this,
-                Settings.System.DEFAULT_RINGTONE_URI);
+        FlutterCallkitIncomingPlugin.Companion.setMyPlayer(MediaPlayer.create(this,
+                Settings.System.DEFAULT_RINGTONE_URI));
         //setting loop play to true
         //this will make the ringtone continuously playing
-        myPlayer.setLooping(true);
+        FlutterCallkitIncomingPlugin.Companion.getMyPlayer().setLooping(true);
         //staring the player
-        myPlayer.start();
-        Handler h = new Handler();
-        long delayInMilliseconds = 60000;
-        h.postDelayed(new Runnable() {
-            public void run() {
-                myPlayer.stop();
-            }
-        }, delayInMilliseconds);
+        FlutterCallkitIncomingPlugin.Companion.getMyPlayer().start();
+//        Handler h = new Handler();
+//        long delayInMilliseconds = 60000;
+//        h.postDelayed(new Runnable() {
+//            public void run() {
+//                FlutterCallkitIncomingPlugin.Companion.getMyPlayer().stop();
+//            }
+//        }, delayInMilliseconds);
         //we have some options for service
         //start sticky means service will be explicity started and stopped
         return START_STICKY;
@@ -41,6 +42,6 @@ public class RingtonePlayerService extends Service {
 
     @Override
     public void onDestroy() {
-        myPlayer.stop();
+        FlutterCallkitIncomingPlugin.Companion.getMyPlayer().stop();
     }
 }
