@@ -13,6 +13,7 @@
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:showOnLockScreen="true"
+            android:exported="true"
             android:launchMode="singleInstance"
             android:theme="@style/CallkitIncomingTheme">
             <intent-filter>
